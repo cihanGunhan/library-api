@@ -1,6 +1,7 @@
 package com.cihangunhan.libraryapi.controller;
 
-import com.cihangunhan.libraryapi.entity.Book;
+import com.cihangunhan.libraryapi.dto.BookRequest;
+import com.cihangunhan.libraryapi.dto.BookResponse;
 import com.cihangunhan.libraryapi.entity.BookStatus;
 import com.cihangunhan.libraryapi.service.BookService;
 import jakarta.validation.Valid;
@@ -19,26 +20,28 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping
-    public ResponseEntity<List<Book>> getAllBooks() {
+    public ResponseEntity<List<BookResponse>> getAllBooks() {
         return ResponseEntity.ok(bookService.getAllBooks());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Book> getBookById(@PathVariable Long id) {
+    public ResponseEntity<BookResponse> getBookById(
+            @PathVariable Long id) {
         return ResponseEntity.ok(bookService.getBookById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Book> createBook(@Valid @RequestBody Book book) {
+    public ResponseEntity<BookResponse> createBook(
+            @Valid @RequestBody BookRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(bookService.createBook(book));
+                .body(bookService.createBook(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Book> updateBook(
+    public ResponseEntity<BookResponse> updateBook(
             @PathVariable Long id,
-            @Valid @RequestBody Book book) {
-        return ResponseEntity.ok(bookService.updateBook(id, book));
+            @Valid @RequestBody BookRequest request) {
+        return ResponseEntity.ok(bookService.updateBook(id, request));
     }
 
     @DeleteMapping("/{id}")
@@ -48,13 +51,13 @@ public class BookController {
     }
 
     @GetMapping("/status/{status}")
-    public ResponseEntity<List<Book>> getBooksByStatus(
+    public ResponseEntity<List<BookResponse>> getBooksByStatus(
             @PathVariable BookStatus status) {
         return ResponseEntity.ok(bookService.getBooksByStatus(status));
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Book>> searchBooks(
+    public ResponseEntity<List<BookResponse>> searchBooks(
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String author) {
         if (title != null) {

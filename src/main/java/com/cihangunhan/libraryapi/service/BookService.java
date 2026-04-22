@@ -2,6 +2,7 @@ package com.cihangunhan.libraryapi.service;
 
 import com.cihangunhan.libraryapi.entity.Book;
 import com.cihangunhan.libraryapi.entity.BookStatus;
+import com.cihangunhan.libraryapi.exception.BookNotFoundException;
 import com.cihangunhan.libraryapi.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class BookService {
 
     public Book getBookById(Long id) {
         return bookRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Kitap bulunamadı: " + id));
+                .orElseThrow(() -> new BookNotFoundException(id));
     }
 
     public Book createBook(Book book) {
